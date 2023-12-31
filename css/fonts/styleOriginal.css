@@ -1,0 +1,436 @@
+@import url('https://fonts.maateen.me/solaiman-lipi/font.css');
+
+/* -------------------------------- 
+
+Primary style
+
+-------------------------------- */
+
+p,body,html {
+    /*font-family: Arial, sans-serif !important;*/
+    font-family: 'Noto Serif Bengali', serif !important;
+}
+
+a {
+    /*font-family: Arial, sans-serif !important;*/
+    font-family: 'Noto Serif Bengali', serif !important;
+    color: #000;
+    text-decoration: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+        /*font-family: Arial, sans-serif !important;*/
+        font-family: 'Noto Serif Bengali', serif !important;
+}
+
+*,
+*::after,
+*::before {
+    box-sizing: border-box;
+}
+hr{
+    padding: 0;
+    margin: 0;
+}
+html {
+    font-size: 62.5%;
+}
+
+body {
+    font-size: 1.6rem;
+    /*font-family: sans-serif;*/
+    color: #2e3233;
+    background-color: #ffffff;
+    margin: 0;
+}
+
+@media only screen and (max-width: 1169px) {
+    body.nav-on-left.overflow-hidden {
+        overflow: hidden;
+    }
+}
+
+img {
+    /* make images responsive */
+    max-width: 100%;
+}
+
+
+/* -------------------------------- Main components -------------------------------- */
+
+.main-container {
+    max-width: 784px;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    margin: 0 auto;
+}
+
+@media (min-width: 876px) {
+    .main-container {
+        max-width: 1040px;
+    }
+}
+
+/*@media screen and (min-width: 1264px) {
+    .main-container {
+        max-width: 1280px;
+    }
+}*/
+
+/* -------------------------------- Main components end-------------------------------- */
+
+
+/*-------------------------------------------------hamburger menu starts here------------------------------------------ */
+
+.hamburger:hover,.close-dropdown:hover{
+    cursor: pointer;
+}
+
+.head-banner{
+  background-image: url("/img/pano1.jpg");
+  background-color: #cccccc;
+  height: 120px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+}
+.hamburger-line {
+    width: 24px;
+    height: 3px;
+    background-color: #000;
+    margin: 6px 0;
+}
+
+
+  
+  .hamburger-list {
+    background-color: #ffffff;
+    padding: 10px;
+    flex: 50%;
+    border-bottom: 1px solid #e2e2e2;
+  }
+  div.hamburger-list:hover{
+  background-color: #eee;
+  }
+  .hamburger-list a {
+    width: 100%;
+    text-align: center;
+    font-size: 1.6rem;
+    font-weight: 900;
+    transition: .6s;
+    color: rgb(29, 2, 2);
+    letter-spacing: 2px;
+  }
+.left-header img{
+display: none;
+}
+
+.close-dropdown{
+  position: absolute;
+  top: 5px;
+  right: 5px;
+}
+
+/* -------------------------hamburger menu end here------------------------------ */
+.cd-main-header {
+    height: 65px;
+    background: #ffffff;
+    z-index: 3;
+    padding: 10px;
+    position: relative;
+     width: 100%;
+}
+    .logo{
+       position:absolute;
+top: 11px;
+    left: 50px;
+    }
+    .logo img{
+        height: 37px;
+    }
+
+.hamburger{
+    width: 24px;
+    position: absolute;
+    top: 18px;
+    left: 10px;
+}
+
+.search-bar{
+    position: absolute;
+    top: 25px;
+    left:  50px;
+    display: none;
+}
+
+.tv{
+    position: absolute;
+    top: 10px;
+    right:  10px;
+    width: 45px;
+}
+
+.todaydate {
+    position: absolute;
+    bottom: 5px;
+    left: 5px;
+    font-family: 'Noto Serif Bengali', serif;
+    font-weight: 400;
+    font-size: 16px;
+    color: #555555;
+    display: none;
+}
+
+
+
+.notification {
+    position: absolute;
+   bottom: 0;
+    right: 10px;
+    display: none;
+}
+
+
+li.location848 i {
+    margin-right: 10px;
+}
+
+
+.subnav {
+    margin-top: 5px;
+    position: sticky;
+    top: 0;
+    width: auto;
+    z-index: 10;
+    display: none;
+    background-color: #ffffff;
+    width: 100%;
+    color: var(--content-color);
+
+}
+
+.subnav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: -webkit-flex;
+    display: -moz-flex;
+    display: -ms-flex;
+    display: -o-flex;
+    display: flex;
+    align-items: flex-start;
+flex-wrap: nowrap;
+    justify-content: center;
+}
+.subnav li {
+
+    padding: 8px 16px ;
+    height: 44px;
+}
+.subnav a {
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+    font-size: 1.6rem;
+    transition: .6s;
+    color: rgb(29, 2, 2);
+    font-weight: bold;
+    letter-spacing: 2px;
+    text-decoration: none;
+    background: #ffffff;
+}
+
+
+
+@media only screen and (min-width:1251px) {
+
+}
+
+.top{
+     position: relative;
+     width: 100vw;
+     top:0;
+     left: calc(50% - 50vw); 
+     border: 1px solid #e2e2e2;
+     
+    }
+    .bottom{
+        position: relative;
+        width: 100vw;
+        top:0;
+        left: calc(50% - 50vw);
+        border: 1px solid #e2e2e2;
+}
+
+#navbar a:hover {
+    cursor: pointer;
+}
+@media (min-width: 1240px) {
+    .subnav a {
+        display: block;
+    }
+}
+
+.container1 {
+    /* padding-top: 3em; */
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    grid-gap: 56px;
+    overflow: hidden;
+    padding: 0;
+    padding-top: 28px;
+}
+
+
+@media only screen and (min-width: 560px) {
+    .container1 {
+        grid-template-columns: repeat(2, 1fr);
+        padding-right: 15px;
+        padding-left: 15px;
+    }
+}
+
+@media only screen and (min-width: 860px) {
+    .main-container {
+        max-width: 1280px;
+    }
+    .container1 {
+        grid-template-columns: repeat(3, 1fr);
+      /*  padding-right: 15px;
+        padding-left: 15px;*/
+    }
+.logo{
+    position: relative;
+    left: 0;
+    width: 260px;
+    margin: auto;
+}
+    .logo img{
+    height: 57px;
+}
+.cd-main-header {
+    height: 113px;
+}
+.hamburger img,.todaydate, .notification, .search-bar{
+display: block;
+}
+    .subnav{
+        display: block;
+    }
+}
+@media only screen and (min-width: 1240px) {
+    .container1 {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+
+/* MY GRID BOXES   */
+.grid-box {
+    position: relative;
+    height: 250px;
+    /* overflow: hidden; */
+    text-align: justify;
+}
+.grid-box:hover{
+  cursor: pointer;
+}
+.grid-box::before {
+    content: "";
+    position: absolute;
+    height: 100%;
+    width: 1px;
+    background: #e2e2e2;
+    right: -27px;
+    top: 0;
+  }
+.grid-box::after {
+    content: "";
+    height: 1px;
+    position: absolute;
+    bottom: -21px;
+    background: #e2e2e2;
+    left: 0;
+    right: 0;
+    width: calc(100% + 56px);
+    display: table;
+  }
+
+.grid-box p {
+    /*margin-top: 0;*/
+    text-align: justify;
+}
+.grid-box .news-title {
+    font-weight: 600;
+    font-size: 20px;
+    padding-bottom: 10px;
+}
+.grid-box .news-body-container-holder {
+    position: relative;
+    width: 100%;
+    max-width: 258px;
+    margin: auto;
+}
+.grid-box .news-body-container {
+    position: relative;
+    font-weight: 400;
+    font-size: 16px;
+    width: 100%;
+    padding-top: 56.25%;
+    max-height: 144px;
+    color: #555555;
+}
+.grid-box .news-body {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left:0;
+    font-weight: 400;
+    font-size: 16px;
+    color: #555555;
+}
+.grid-box .news-click {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left:0;
+    font-weight: 400;
+    font-size: 16px;
+    color: #555555;
+}
+.grid-box .news-footer{
+    position: absolute;
+    bottom: -6px;
+}
+
+.footer{
+    position: absolute;
+    bottom: 1px;
+    justify-content: center;
+}
+.last-footer9329 {
+    padding: 20px;
+    background-color: #181818;
+}
+.last-footer9329 p {
+    line-height: 1.5em;
+    color: #cccccc;
+    font-family: fantasy;
+    font-size: 12px;
+}
+
+.hr{
+    color: #DDDDDD;
+}
+
+/* END OF GRID BOX */
+
+/* ENND */

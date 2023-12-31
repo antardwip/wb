@@ -1,0 +1,555 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>ISKCON BANGLA</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali:wght@400;600&display=swap" rel="stylesheet">
+      <script src="https://mayapurapp.ap-1.evennode.com/socket.io/socket.io.js"></script>
+	<link rel="stylesheet" href="css/videoblock.css">
+	<link rel="stylesheet" href="css/style1.css">
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/clappr@latest/dist/clappr.min.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+
+	<!--<script
+		type="text/javascript">window.$crisp = []; window.CRISP_WEBSITE_ID = "39e50e19-74d1-428b-a21c-50083ac1e1c3"; (function () { d = document; s = d.createElement("script"); s.src = "https://client.crisp.chat/l.js"; s.async = 1; d.getElementsByTagName("head")[0].appendChild(s); })();</script>-->
+
+</head>
+
+<body>
+
+
+	<!--#####################-----------STARTING NAVBAR PART--------------#####################-->
+
+	<div class="main-container">
+		<div class="cd-main-header">
+
+
+			<div class="hamburger" aria-label="Close" data-tracking-category="Button" data-tracking-action="Click"
+				data-tracking-label="hamburger-menu">
+				<div class="hamburger-line"></div>
+				<div class=" hamburger-line"></div>
+				<div class="hamburger-line"></div>
+			</div>
+
+			<!--   <img src="img/search.png" class="search-bar" alt="search bar">-->
+			<div class="todaydate">
+			</div>
+
+			<div class="logo">
+				<a class="cd-logo return"><img src="img/iskcon-bangla-logo-2.png " alt="Logo "></a>
+			</div>
+
+			<!--  <div id="google_translate_element" class="notification"></div>-->
+			<div id="sp" class="notification"><a href="Prabhupada.html"><img src="img/sp.jpg" style="width: 45px"
+						alt="search bar"></a></div>
+
+
+						
+			<!-- <a href="tv.html"><img src="img/tv3.png" class="tv" alt="tv"></a> -->
+			<p><span id="clock"></span> <span   id="kal"></span></p>
+
+		</div>
+
+	</div>
+
+	<!--#####################-----------------------END NAVBAR PART------------------#####################-->
+
+	<!--#####################-----------------------part One-------------------------#####################-->
+	<div class="subnav">
+		<div>
+			<div style="width: 80px"><a href="index.html">সংবাদ ক্ষেত্র</a></div>
+			<!--           <div class="dropdown" style="width: 100px">
+                <button class="dropbtn">মায়াপুর ভ্রমন</button>
+
+                <div class="dropdown-content">
+                    <a href="tovp.html">নতুন মন্দির                     </a>
+                    <a href="AccomodationPreviewWithSmallPics.html">বাসস্থান</a>
+                    <a href="PrasadamPreviewWithSmallPics.html">প্রসাদম</a>
+                    <a href="TodoPreviewWithSmallPics.html">কার্যকলাপ</a>
+                    <a href="FacilitiesPreviewWithSmallPics.html">সুযোগ সুবিধা</a>
+                    <a href="TemplePreviewWithSmallPics.html">মন্দির</a>
+                    <a href="MayapurTourPreviewWithSmallPics.html">মায়াপুর ভ্রমণ</a>
+                </div>
+            </div>-->
+			<div style="width: 95px"><a href="JoinUsPreviewWithSmallPics.html">সংযোগ</a></div>
+			<div style="width: 90px"><a href="bengalitemplesPreviewWithSmallPics.html">মন্দির</a></div>
+			<div style="width: 90px"><a href="tv.html">মায়াপুর টিভি</a></div>
+			<div style="width: 90px"><a href="https://mayapur.store/">বইের দোকান</a></div>
+			<div style="width: 65px"><a href="Prabhupada.html">প্রভুপাদ</a></div>
+		</div>
+		<!-- <hr class="bottom"> -->
+	</div>
+
+
+
+
+	<br>
+	<div id="flips" class="head-banner">
+	</div>
+
+	<div id="player"></div>
+
+	<!--  <hr class="bottom">-->
+
+
+	<br>
+	<hr style="border-top: 1px solid #ccc;">
+
+
+
+
+
+	<div class="main-container">
+
+		<div class="hamburger-container" style="display: none">
+			<div class="close-dropdown"><img src="img/fa_closewindow.png" alt="close-dropdown"></div>
+			<div class="hamburger-list"><a href="index.html">সংবাদ ক্ষেত্র</a></div>
+			<div class="hamburger-list">মায়াপুর ভ্রমন</div>
+			<div class="hamburger-list" style="padding-left:30px"><a href="tovp.html">নতুন মন্দির </a></div>
+			<div class="hamburger-list" style="padding-left:30px"><a
+					href="AccomodationPreviewWithSmallPics.html">বাসস্থান</a></div>
+			<div class="hamburger-list" style="padding-left:30px"><a
+					href="PrasadamPreviewWithSmallPics.html">প্রসাদম</a></div>
+			<div class="hamburger-list" style="padding-left:30px"><a href="TodoPreviewWithSmallPics.html">কার্যকলাপ</a>
+			</div>
+			<div class="hamburger-list" style="padding-left:30px"><a href="FacilitiesPreviewWithSmallPics.html"">সুযোগ সুবিধা</a></div>
+            <div class=" hamburger-list" style="padding-left:30px"><a href="TemplePreviewWithSmallPics.html">মন্দির</a>
+			</div>
+			<div class="hamburger-list" style="padding-left:30px"><a
+					href="MayapurTourPreviewWithSmallPics.html">মায়াপুর ভ্রমণ</a></div>
+			<div class="hamburger-list"><a href="JoinUsPreviewWithSmallPics.html">যোগদান করুন</a></div>
+			<div class="hamburger-list"><a href="bengalitemplesPreviewWithSmallPics.html">মন্দির</a></div>
+			<div class="hamburger-list"><a href="tv.html">মায়াপুর টিভি</a></div>
+			<div class="hamburger-list"><a href="https://mayapur.store/">বইের দোকান</a></div>
+			<div class="hamburger-list"><a href="Prabhupada.html">প্রভুপাদ</a></div>
+			<div class="hamburger-list"><a href="circulation.html">সার্কুলেশন</a></div>
+			<div class="hamburger-list"><a href="generalpolicy.html">নীতিমালা</a></div>
+			<div class="hamburger-list"><a href="privacy.html">গোপনীয়তা নীতি</a></div>
+			<div class="hamburger-list"><a href="contactus.html">যোগাযোগ</a></div>
+
+
+		</div>
+		<!--#####################-----------BANNER-----------------------#####################-->
+
+		<!--#####################-----------GRID BOX-------------------------#####################-->
+
+		<div class="container1">
+
+			<div class="grid-box" id="g1">
+				<div class="grid-large-version">
+
+					<div class="news-image-container"></div>
+					<div class="left-holder">
+						<div class="title news-title"></div>
+						<div class="comment"></div>
+						<div class="news-body-text"></div>
+					</div>
+					<div class="text-footer"></div>
+					<div class="news-click"></div>
+				</div>
+			</div>
+
+
+			<!--		<div class="grid-box" id="g2">
+				<div class="bigPicture"></div>
+			</div>-->
+			<div class="grid-box" id="g2">
+				<div class="grid-large-version">
+
+					<div class="news-image-container"></div>
+					<div class="left-holder">
+						<div class="title news-title"></div>
+						<div class="comment"></div>
+						<div class="news-body-text"></div>
+					</div>
+					<div class="text-footer"></div>
+					<div class="news-click"></div>
+				</div>
+			</div>
+
+			<div class="grid-box" id="g3">
+				<div class="grid-large-version">
+
+					<div class="news-image-container"></div>
+					<div class="left-holder">
+						<div class="title news-title" id=""></div>
+						<div class="comment"></div>
+						<div class="news-body-text"></div>
+					</div>
+					<div class="text-footer"></div>
+					<div class="news-click"></div>
+				</div>
+			</div>
+			<div class="grid-box" id="g4">
+				<div class="grid-large-version">
+
+					<div class="news-image-container"></div>
+					<div class="left-holder">
+						<div class="title news-title"></div>
+						<div class="comment"></div>
+						<div class="news-body-text"></div>
+					</div>
+					<div class="text-footer"></div>
+					<div class="news-click"></div>
+				</div>
+			</div>
+			<div class="grid-box" id="g5">
+				<div class="grid-large-version">
+
+					<div class="news-image-container"></div>
+					<div class="left-holder">
+						<div class="title news-title"></div>
+						<div class="comment"></div>
+						<div class="news-body-text"></div>
+					</div>
+					<div class="text-footer"></div>
+					<div class="news-click"></div>
+				</div>
+				<div class="grid-small-version" style="display: none">
+
+					<div class="little-news-image-container"></div>
+					<div class="left-holder little-left-holder">
+						<div class="title little-news-title"></div>
+						<div class="comment news-comment" style="display: none"></div>
+						<div class="text news-body-text" style="display: none"></div>
+						<div class="text-footer little-news-footer"></div>
+					</div>
+					<div class="news-click"></div>
+				</div>
+			</div>
+			<div class="grid-box" id="g6">
+				<div class="grid-large-version">
+
+					<div class="news-image-container"></div>
+					<div class="left-holder">
+						<div class="title news-title"></div>
+						<div class="comment"></div>
+						<div class="news-body-text"></div>
+					</div>
+					<div class="text-footer"></div>
+					<div class="news-click" id="news-click6"></div>
+				</div>
+				<div class="grid-small-version" style="display: none">
+					<div class="left-holder little-left-holder">
+						<div class="title little-news-title"></div>
+						<div class="comment news-comment" style="display: none"></div>
+						<div class="text news-body-text" style="display: none"></div>
+						<div class="text-footer little-news-footer"></div>
+					</div>
+					<div class="little-news-image-container"></div>
+					<div class="news-click" id="news-click6"></div>
+				</div>
+			</div>
+			<div class="grid-box" id="g7">
+				<div class="grid-large-version">
+
+					<div class="news-image-container"></div>
+					<div class="left-holder">
+						<div class="title news-title"></div>
+						<div class="comment"></div>
+						<div class="news-body-text"></div>
+					</div>
+					<div class="text-footer"></div>
+					<div class="news-click" id="news-click7"></div>
+				</div>
+				<div class="grid-small-version" style="display: none">
+					<div class="left-holder little-left-holder">
+						<div class="title little-news-title"></div>
+						<div class="comment news-comment" style="display: none"></div>
+						<div class="text news-body-text" style="display: none"></div>
+						<div class="text-footer little-news-footer"></div>
+					</div>
+					<div class="little-news-image-container"></div>
+					<div class="news-click" id="news-click7"></div>
+				</div>
+			</div>
+
+			<div class="grid-box" id="g8">
+				<div class="grid-large-version">
+
+					<div class="news-image-container"></div>
+					<div class="left-holder">
+						<div class="title news-title"></div>
+						<div class="comment"></div>
+						<div class="news-body-text"></div>
+					</div>
+					<div class="text-footer"></div>
+					<div class="news-click" id="news-click8"></div>
+				</div>
+				<div class="grid-small-version" style="display: none">
+					<div class="left-holder little-left-holder">
+						<div class="title little-news-title"></div>
+						<div class="comment news-comment" style="display: none"></div>
+						<div class="text news-body-text" style="display: none"></div>
+						<div class="text-footer little-news-footer"></div>
+					</div>
+					<div class="little-news-image-container"></div>
+					<div class="news-click" id="news-click8"></div>
+				</div>
+			</div>
+			<div class="grid-box" id="g9">
+				<div class="left-holder little-left-holder">
+					<div class="title little-news-title"></div>
+					<div class="comment news-comment" style="display: none"></div>
+					<div class="text news-body-text" style="display: none"></div>
+					<div class="text-footer little-news-footer"></div>
+				</div>
+				<div class="little-news-image-container">
+					<div class="little-news-image-flexy">
+						<div class="little-news-image"></div>
+					</div>
+				</div>
+				<div class="news-click" id="news-click9"></div>
+
+			</div>
+			<div class="grid-box" id="g10">
+				<div class="left-holder little-left-holder">
+					<div class="title little-news-title"></div>
+					<div class="comment news-comment" style="display: none"></div>
+					<div class="text news-body-text" style="display: none"></div>
+					<div class="text-footer little-news-footer"></div>
+				</div>
+				<div class="little-news-image-container">
+					<div class="little-news-image-flexy">
+						<div class="little-news-image"></div>
+					</div>
+				</div>
+				<div class="news-click" id="news-click10"></div>
+
+			</div>
+			<div class="grid-box" id="g11">
+				<div class="left-holder little-left-holder">
+					<div class="title little-news-title"></div>
+					<div class="comment news-comment" style="display: none"></div>
+					<div class="text news-body-text" style="display: none"></div>
+					<div class="text-footer little-news-footer"></div>
+				</div>
+				<div class="little-news-image-container">
+					<div class="little-news-image-flexy">
+						<div class="little-news-image"></div>
+					</div>
+				</div>
+				<div class="news-click" id="news-click11"></div>
+
+			</div>
+			<div class="grid-box" id="g12">
+				<div class="left-holder little-left-holder">
+					<div class="title little-news-title"></div>
+					<div class="comment news-comment" style="display: none"></div>
+					<div class="text news-body-text" style="display: none"></div>
+					<div class="text-footer little-news-footer"></div>
+				</div>
+				<div class="little-news-image-container">
+					<div class="little-news-image-flexy">
+						<div class="little-news-image"></div>
+					</div>
+				</div>
+				<div class="news-click" id="news-click12"></div>
+
+			</div>
+			<div class="grid-box" id="g13">
+				<div class="left-holder little-left-holder">
+					<div class="title little-news-title"></div>
+					<div class="comment news-comment" style="display: none"></div>
+					<div class="text news-body-text" style="display: none"></div>
+					<div class="text-footer little-news-footer"></div>
+				</div>
+				<div class="little-news-image-container">
+					<div class="little-news-image-flexy">
+						<div class="little-news-image"></div>
+					</div>
+				</div>
+				<div class="news-click" id="news-click13"></div>
+
+			</div>
+			<div class="grid-box" id="g14">
+				<div class="left-holder little-left-holder">
+					<div class="title little-news-title"></div>
+					<div class="comment news-comment" style="display: none"></div>
+					<div class="text news-body-text" style="display: none"></div>
+					<div class="text-footer little-news-footer"></div>
+				</div>
+				<div class="little-news-image-container">
+					<div class="little-news-image-flexy">
+						<div class="little-news-image"></div>
+					</div>
+				</div>
+				<div class="news-click" id="news-click14"></div>
+
+			</div>
+			<div class="grid-box" id="g15">
+				<div class="left-holder little-left-holder">
+					<div class="title little-news-title"></div>
+					<div class="comment news-comment" style="display: none"></div>
+					<div class="text news-body-text" style="display: none"></div>
+					<div class="text-footer little-news-footer"></div>
+				</div>
+				<div class="little-news-image-container">
+					<div class="little-news-image-flexy">
+						<div class="little-news-image"></div>
+					</div>
+				</div>
+				<div class="news-click" id="news-click15"></div>
+
+			</div>
+			<div class="grid-box" id="g16">
+				<div class="left-holder little-left-holder">
+					<div class="title little-news-title"></div>
+					<div class="comment news-comment" style="display: none"></div>
+					<div class="text news-body-text" style="display: none"></div>
+					<div class="text-footer little-news-footer"></div>
+				</div>
+				<div class="little-news-image-container">
+					<div class="little-news-image-flexy">
+						<div class="little-news-image"></div>
+					</div>
+				</div>
+				<div class="news-click" id="news-click16"></div>
+
+			</div>
+			
+		</div>
+
+
+
+
+		<div class="page-news-container" style="display:none">
+			<div class="page-news-title"></div>
+			<div class="page-news-image"></div>
+			<div class="page-YTnews-body-container-holder">
+				<div class="page-YTnews-body-container">
+					<div class="page-YTnews-body"></div>
+				</div>
+			</div>
+			<div class="page-news-footer-holder">
+				<div class="page-news-footer"></div>
+			</div>
+			<div class="page-news-body"></div>
+			<div class="return" style="position: absolute; top: 0; left: 0;padding-top: 35px"><img src="img/bak.jpg"
+					alt="backbutton" /></div>
+			<br>
+			<hr class="top">
+			<br class="br">
+			<div class="iframeholder"></div>
+			<br class="br">
+			<hr class="bottom">
+			<br>
+		</div>
+	</div>
+	<div class="main-container">
+		<div class="grid-container grd"></div>
+		<div class="loadmore" style="display: block"><button>আরো</button></div>
+		<!--#####################-----------GRID BOX-------------------------#####################-->
+	</div>
+
+	<br>
+	<br>
+	<br>
+
+	<div class="main-container">
+		<div class="vbgrid-container">
+			<div class="vbheader">
+				<h2>ভিডিও খবর</h2>
+			</div>
+
+			<div id="va" class="vbleft" style="background-color:#aaa;">
+				<div class="vid-container">
+					<iframe id="v_link_1" class="responsive-iframe" src="" allow="fullscreen"></iframe>
+				</div>
+				<div id="v_name_1"></div>
+			</div>
+			<div id="vb" class="vbmiddle" style="background-color:#bbb;">
+				<div class="vid-container">
+					<iframe id="v_link_2" class="responsive-iframe" src="" allow="fullscreen"></iframe>
+				</div>
+				<div id="v_name_2"></div>
+			</div>
+			<div id="vc" class="vbright" style="background-color:#ccc;">
+				<div class="vid-container">
+					<iframe id="v_link_3" class="responsive-iframe" src="" allow="fullscreen"></iframe>
+				</div>
+				<div id="v_name_3"></div>
+			</div>
+
+			<div class="vbfooter">
+				<h3>|| হরে কৃষ্ণ ||</h3>
+			</div>
+		</div>
+	</div>
+
+	<br>
+	<br>
+	<br>
+</div>
+
+	<!--<div style="font-family:'UrmeeMJ Bold';font-size: 30px;">¸qvnvwU</div>-->
+
+	<br>
+	<br class="br">
+	<br class="br">
+	<hr class="bottom">
+	<br>
+	<div class="footer">
+		<!--<div class="footerbheading"><h2>মায়াপুর ভ্রমন</h2></div>-->
+		<div class="footera">
+
+			<div class="footli"><a href="https://www.facebook.com/Mayapur.tv"><img src="img/fbblack.png"
+						style="vertical-align: middle;" alt="youtube">&nbsp;&nbsp;&nbsp;ফেসবুক</a></div>
+			<div class="footli"><a href="https://www.youtube.com/c/ISKCONBangla"><img src="img/ytblack.png"
+						style="vertical-align: middle;" alt="youtube">&nbsp;&nbsp;&nbsp;ইউটিউব</a></div>
+			<div class="footli"><a href="https://www.instagram.com/stories/mayapurtv/">&nbsp;&nbsp;<img
+						src="img/instablack.png" style="vertical-align: middle;"
+						alt="instagram">&nbsp;&nbsp;&nbsp;ইনস্টাগ্রাম</a></div>
+		</div>
+
+		<div class="footerb">
+			<div class="footerbheading">
+				<h2>মায়াপুর ভ্রমন</h2>
+			</div>
+			<div> <a href="https://www.iskconbangla.com/AccomodationPreviewWithSmallPics.html">বাসস্থান</a></div>
+			<div> <a href="https://www.iskconbangla.com/PrasadamPreviewWithSmallPics.html">প্রসাদম</a></div>
+			<div> <a href="https://www.iskconbangla.com/TodoPreviewWithSmallPics.html">কার্যকলাপ</a></div>
+			<div> <a href="https://www.iskconbangla.com/FacilitiesPreviewWithSmallPics.html">সুযোগ সুবিধা</a></div>
+			<div> <a href="https://www.iskconbangla.com/TemplePreviewWithSmallPics.html">মন্দির</a></div>
+			<div> <a href="https://www.iskconbangla.com/MayapurTourPreviewWithSmallPics.html">মায়াপুর ভ্রমণ</a></div>
+
+		</div>
+
+
+		<div class="footerc">
+			<div class="footerbheading">
+				<h2>অফসি</h2>
+			</div>
+			<a href="https://www.iskconbangla.com/circulation.html">সার্কুলেশন</a>
+			<a href="https://www.iskconbangla.com/generalpolicy.html">নীতিমালা</a>
+			<a href="https://www.iskconbangla.com/privacy.html">গোপনীয়তা নীতি</a>
+			<a href="https://www.iskconbangla.com/contactus.html">যোগাযোগ</a>
+		</div>
+
+	</div>
+
+
+
+
+
+	<!-- -------------------------------------------javascript start------------------------- -->
+	<script>
+		var start = "Starting Now";
+                                          </script>
+
+	<script type="text/javascript" src="js/scriptE.js"></script>
+
+	<script>
+            //var player = new Clappr.Player({ source: "rtmp://MayapurTV:zxasqw108@mtvnyc.dyndns.tv/allTemples/MayapurTV/MayapurTV", parentId: "#player", });
+            var player = new Clappr.Player({ source: "https://video4.mayapur.tv/allTemples/MayapurTV/MayapurTV/playlist.m3u8", parentId: "#player", autoplay:true, height:"100%", width:"100%", });
+            // var player = new Clappr.Player({ source: "https://www.mayapur.tv/iframe/2021basic/index.php?stream=MayapurTV/MayapurTV", parentId: "#player", });
+      </script>
+
+
+</body>
+
+</html>
