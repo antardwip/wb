@@ -12,9 +12,10 @@ var Global = {};
 Global.ChosenChannel = "";
 var store16items = [];
 var loadmore = false;
-var startIndex = 0;
-var globalBannersStore ={};
+let startIndex = 0;
+var globalBannersStore = {};
 var GlobalNewsTitle = '';
+let moreButtonYear = 2056;
 
 let banglaNumber = {
         0: "০",
@@ -29,7 +30,7 @@ let banglaNumber = {
         9: "৯",
 };
 
-$(document).ready(function() {
+$(document).ready(function () {
         try {
                 var socket = io("https://mayapurapp.ap-1.evennode.com");
                 console.log("SOCKET1");
@@ -37,173 +38,189 @@ $(document).ready(function() {
                 socket.emit('retrieveAllBanners');  //on connection, request top banner information
                 socket.emit('retrieveHeadlineNews'); //on connection, request 16 news headlines
                 socket.emit('retrieveAllVideos'); //on connection, request video links
-console.log(">>>>>>>>>>>>>>>startIndex = "+startIndex);
+                console.log(">>>>>>>>>>>>>>>startIndex = " + startIndex);
 
-                socket.on('16NewsHeadlinesRetrieved', function(dataObject) {
+                socket.on('16NewsHeadlinesRetrieved', function (dataObject) {
                         console.log("in 16NewsHeadlinesRetrieved   ");
                         var thumbNews = dataObject
+                        var getLowestDate = 99999999999999;
                         for (var g in thumbNews) {
                                 setupfrontpage(thumbNews[g]); //setup the 16 news headlines one by one.
-                                //console.log("g = "+thumbNews[g]['_id']);
-                                if(thumbNews[g]['_id']<startIndex){
-                                        startIndex=thumbNews[g]['_id'];
+                                if (thumbNews[g]['_id'] < getLowestDate) {  //get the lowest date to set the year for the more button
+                                        getLowestDate = thumbNews[g]['_id'];
+                                        console.log('SSSSSgetLowestDate = ', getLowestDate);
                                 }
+                                var date = new Date(parseInt(getLowestDate));
+                                moreButtonYear = date.getFullYear();
+                                console.log('SSSSSmoreButtonYear  = ', moreButtonYear);
                         }
                 });
 
-socket.on('allBannersRetrieved', function(allBanners) {
-    console.log("in allBannersRetrieved = "+allBanners);
-    // Get the current date and time in the Indian time zone
-    const nd = new Date().toLocaleString('en-US', {
-        timeZone: 'Asia/Kolkata'
-    });
-    const dateObj = new Date(nd);
-    const nhour = dateObj.getHours();
-    const nmin = dateObj.getMinutes();
-    for (var t in allBanners) {
-        globalBannersStore[allBanners[t]['_id']] = allBanners[t]
-        var timeinmins = nhour * 60 + nmin;
-;
-        console.log(">>>>>>>>allBanners[t][skipBanner] = "+allBanners[t]['skipBanner']);
+                socket.on('allBannersRetrieved', function (allBanners) {
+                        console.log("in allBannersRetrieved = " + allBanners);
+                        // Get the current date and time in the Indian time zone
+                        const nd = new Date().toLocaleString('en-US', {
+                                timeZone: 'Asia/Kolkata'
+                        });
+                        const dateObj = new Date(nd);
+                        const nhour = dateObj.getHours();
+                        const nmin = dateObj.getMinutes();
+                        for (var t in allBanners) {
+                                globalBannersStore[allBanners[t]['_id']] = allBanners[t]
+                                var timeinmins = nhour * 60 + nmin;
+                                ;
+                                console.log(">>>>>>>>allBanners[t][skipBanner] = " + allBanners[t]['skipBanner']);
 
-        if (allBanners[t]['skipBanner']===false &&allBanners[t]['startTime'] <= timeinmins && timeinmins < allBanners[t]['stopTime']) {
-            var newImageSrc = "https://www.mayapur.tv/iskconbangla/img/_topbanner/" + allBanners[t]['gif'];
-            //console.log("banner=" + newImageSrc);
-            var image = new Image();
-            image.onload = function() {
-               // console.log(">>>>>>>>>>>>image.src = " + image.src);
-                $(".head-banner").css("background-image", "url('" + newImageSrc + "')");
-                console.log('>>>>>>>>>>>>image.src = ' + $(".head-banner").css("background-image"));
-            };
-            image.src = newImageSrc;
-        }
-    }
+                                if (allBanners[t]['skipBanner'] === false && allBanners[t]['startTime'] <= timeinmins && timeinmins < allBanners[t]['stopTime']) {
+                                        var newImageSrc = "https://www.iskconbangla.com/img/_topbanner/" + allBanners[t]['gif'];
+                                        //console.log("banner=" + newImageSrc);
+                                        var image = new Image();
+                                        image.onload = function () {
+                                                // console.log(">>>>>>>>>>>>image.src = " + image.src);
+                                                $(".head-banner").css("background-image", "url('" + newImageSrc + "')");
+                                                console.log('>>>>>>>>>>>>image.src = ' + $(".head-banner").css("background-image"));
+                                        };
+                                        image.src = newImageSrc;
+                                }
+                        }
+                        //   for (var t in globalBannersStore) {
+                        //console.log("t = "+t);
+                        //   for (var u in globalBannersStore[t]) {
+                        //console.log("u = "+u);
+                        //console.log(globalBannersStore[t][u]);
+                        //}
+                        //}
 
-})
+                })
 
-socket.on('bannerUpdated', function(bannerObject) { //update globalBannersStore
-         console.log("in bannerUpdated");
-         id=bannerObject['_id'];
-         console.log("id = "+id);
-         for(var s in bannerObject){
-                 if(s!=="_id"){
-                           globalBannersStore[id][s]=bannerObject[s];
-                 }
-          }
-           console.log(globalBannersStore[id]);
-});
-
-
-socket.on('allVideosRetrieved', function(allVideos) {
-            for(var t in allVideos){
-                        var num=allVideos[t]['_id'].substring(5,allVideos[t]['_id'].length)
-                        console.log("allVideosRetrieved"+allVideos[t]['_id'].length);
-                        console.log("num = "+num+"t = "+t+"   allVideos[t][title] = "+allVideos[t]['title']+"  allVideos[t][url] = "+allVideos[t]['url'] );
-                        //$("#v_link_"+num).text(allVideos[t]['url']);
-                        $("#v_link_"+num).attr("src",allVideos[t]['url']);
-                        $("#v_name_"+num).html(allVideos[t]['title']);
-            }
-})
+                socket.on('bannerUpdated', function (bannerObject) { //update globalBannersStore
+                        console.log("in bannerUpdated");
+                        id = bannerObject['_id'];
+                        console.log("id = " + id);
+                        for (var s in bannerObject) {
+                                if (s !== "_id") {
+                                        globalBannersStore[id][s] = bannerObject[s];
+                                }
+                        }
+                        console.log(globalBannersStore[id]);
+                });
 
 
-        $('.loadmore button').click(function() {
-                socket.emit('get16MoreNewsHeadlines',startIndex);
-        })
+                socket.on('allVideosRetrieved', function (allVideos) {
+                        for (var t in allVideos) {
+                                var num = allVideos[t]['_id'].substring(5, allVideos[t]['_id'].length)
+                                console.log("allVideosRetrieved" + allVideos[t]['_id'].length);
+                                console.log("num = " + num + "t = " + t + "   allVideos[t][title] = " + allVideos[t]['title'] + "  allVideos[t][url] = " + allVideos[t]['url']);
+                                //$("#v_link_"+num).text(allVideos[t]['url']);
+                                $("#v_link_" + num).attr("src", allVideos[t]['url']);
+                                $("#v_name_" + num).html(allVideos[t]['title']);
+                        }
+                })
 
-               socket.on('16MoreNewsHeadlinesRetrieved', function(dataObject) {
-               console.log("in loadmore get16MoreNewsHeadlines - startIndex = "+startIndex) 
-                       var more16Headlines = dataObject;
-                       console.log("more16Headlines.length = "+more16Headlines.length);
-                       more16Headlines.sort((a, b) => parseFloat(a.block_number) - parseFloat(b.block_number));
+
+                $('.loadmore button').click(function () {
+                        socket.emit('get16MoreNewsHeadlines', startIndex, moreButtonYear);
+                })
+
+                socket.on('16MoreNewsHeadlinesRetrieved', function (dataObject) {
+                        console.log("in loadmore get16MoreNewsHeadlines - startIndex = " + startIndex)
+                        var more16Headlines = dataObject;
+                        var getLowestDate = 999999999999999;
+                        console.log("more16Headlines.length = " + more16Headlines.length);
+                        more16Headlines.sort((a, b) => parseFloat(a.block_number) - parseFloat(b.block_number));
 
 
 
-                       for (var i=more16Headlines.length-1; i>0; i--) {// remove any headlines from the frontpage (they will be numbered 1 to 16 - all others are numbered 90)
-                                      if (more16Headlines[i]['block_number'] < 17) {
-                                                  console.log("Deleting: " + more16Headlines[i]);
-                                                  more16Headlines.splice(i, 1);
-                                       }
-                          }
-//                       more16Headlines.sort((a, b) => parseFloat(a.block_number) - parseFloat(b.block_number));
+                        for (var i = more16Headlines.length - 1; i > 0; i--) {
+                                if (more16Headlines[i]['block_number'] < 17) {     // remove any headlines from the frontpage (they will be numbered 1 to 16 - all others are numbered 90)
+                                        console.log("Deleting: " + more16Headlines[i]);
+                                        more16Headlines.splice(i, 1);
+                                } else if (more16Headlines[i]['_id'] < getLowestDate) {  //get the lowest date to set the year for the more button
+                                        getLowestDate = more16Headlines[i]['_id'];
+                                        console.log('SSSSSgetLowestDate = ', getLowestDate);
+                                        console.log("getLowestDate = " + getLowestDate);
+                                        console.log("more16Headlines.length = " + more16Headlines.length);
+                                        var date = new Date(parseInt(getLowestDate));
+                                        moreButtonYear = date.getFullYear();
+                                }
+                        }
+                        //                       more16Headlines.sort((a, b) => parseFloat(a.block_number) - parseFloat(b.block_number));
                         var remainder = 16 - more16Headlines.length;
 
 
-                       for (var g in more16Headlines) {
-                               setupfrontpage(more16Headlines[g]); //setup the 16 older news headlines one by one.
-                       }
-                      startIndex=startIndex+16;
-                       if(remainder>0){
-                                  socket.emit('get16MoreNewsHeadlines',startIndex);
-                       }
-
-               });
-
-
-
-socket.on('newsArticleRetrieved', function(data) {
-    console.log("in 'newsArticleRetrieved = " + data);
-    var thisid = data['_id'];
-    console.log("thisid = " + thisid);
-    $(".page-YTnews-body-container").css("padding-top", "0");
-    $(".page-YTnews-body-container-holder").css("padding-top", "0");
-    $('.page-YTnews-body').html('');
-    $('.page-news-title').html('');
-    $('.page-news-body').html('');
-    $(".page-news-image").insertAfter(".page-news-title");
-    $(".page-news-image").css("padding-top", "0");
-    $('.page-news-image').html('');
-    $(".iframeholder").html('');
-    //console.log("this.id = " + thisid);
-    $(".container1, .vbgrid-container").css("display", "none");
-    $(".page-news-container").css("display", "block");
-    pageNumber = thisid.substring(10, thisid.length);
-    document.body.scrollTop = document.documentElement.scrollTop = 0;
-    if (data['full_newstext']) {
-        $('.page-news-body').html(data['full_newstext']);
-    }
-
-    if (data['footer_ad'] && data['footer_ad'].length > 1) {
-        console.log("data[footer_ad]= " + data['footer_ad']);
-        $(".iframeholder").html('<div style="height: 350px"><iframe width="100%" height="100%" align="center" frameborder="no" scrolling="no" src="https://www.iskconbangla.com/iframe/' + data["footer_ad"] + '" style="vertical-align: center;" allowfullscreen></iframe></div>');
-    } else {
-        $(".iframeholder").html('');
-    }
-    $('.page-news-title').html(GlobalNewsTitle);
-
-    if (data['image']) {
-        console.log("data[image]= " + data['image']);
-        if (data['image'].length > 4 && !(data['youtube_embed'] && data['youtube_embed'].length > 40)) {
-            $(".page-news-image").css("padding-top", "28px");
-
-            var date = new Date(parseInt(thisid.substring(1, thisid.length)));
-            theYear = parseInt(date.getFullYear());
-            var newImage = "";
-            newImage = "https://www.mayapur.tv/iskconbangla/img/" + theYear + "_news/" + data['image'];
-            $('.page-news-image').html('<img src="' + newImage + '">')
-        }
-    } else {
-        //console.log("data[NewsImage]= " + data['NewsImage']);//coming from firebase hosting storage
-        var image = "https://www.iskconbangla.com/img/news/" + data['savedNewsImage'];
-        $(".page-news-image").css("padding-top", "28px");
-        $('.page-news-image').html('<img src="' + image + '">')
-    }
-thisid=thisid.substring(1,thisid.length)
-console.log("allNewsStorage[thisid][youtube_embed] = "+allNewsStorage[thisid]['youtube_embed']);
-
-	//if (allNewsStorage[fran]['block_number']) {
-	//	$('.page-news-title').html(allNewsStorage[fran]['savedNewsTitle']);
-		if (allNewsStorage[thisid]['youtube_embed'] && allNewsStorage[thisid]['youtube_embed'].length > 40) {
-			console.log("putting in youtube iframe");
-			$(".page-YTnews-body-container").css("padding-top", "56.25%");
-			$(".page-YTnews-body-container-holder").css("padding-top", "28px");
-			$('.page-YTnews-body').html(allNewsStorage[thisid]['youtube_embed']);
-			$(".page-news-image").insertAfter(".page-news-body");
-		}
-	//}
+                        for (var g in more16Headlines) {
+                                setupfrontpage(more16Headlines[g]); //setup the 16 older news headlines one by one.
+                        }
+                        startIndex = startIndex + 16;
+                        if (remainder > 0) {
+                                socket.emit('get16MoreNewsHeadlines', startIndex, moreButtonYear);
+                        }
+                        console.log('XXXXXXmoreButtonYear  = ', moreButtonYear)
+                });
 
 
-    $(".loadmore").hide()
-});
+
+                socket.on('newsArticleRetrieved', function (data) {
+                        console.log("in 'newsArticleRetrieved = " + data);
+                        var thisid = data['_id'];
+                        console.log("thisid = " + thisid);
+                        $(".page-YTnews-body-container").css("padding-top", "0");
+                        $(".page-YTnews-body-container-holder").css("padding-top", "0");
+                        $('.page-YTnews-body').html('');
+                        $('.page-news-title').html('');
+                        $('.page-news-body').html('');
+                        $(".page-news-image").insertAfter(".page-news-title");
+                        $(".page-news-image").css("padding-top", "0");
+                        $('.page-news-image').html('');
+                        $(".iframeholder").html('');
+                        //console.log("this.id = " + thisid);
+                        $(".container1, .vbgrid-container").css("display", "none");
+                        $(".page-news-container").css("display", "block");
+                        pageNumber = thisid.substring(10, thisid.length);
+                        document.body.scrollTop = document.documentElement.scrollTop = 0;
+                        if (data['full_newstext']) {
+                                $('.page-news-body').html(data['full_newstext']);
+                        }
+
+                        if (data['footer_ad'] && data['footer_ad'].length > 1) {
+                                console.log("data[footer_ad]= " + data['footer_ad']);
+                                $(".iframeholder").html('<div style="height: 350px"><iframe width="100%" height="100%" align="center" frameborder="no" scrolling="no" src="https://www.iskconbangla.com/iframe/' + data["footer_ad"] + '" style="vertical-align: center;" allowfullscreen></iframe></div>');
+                        } else {
+                                $(".iframeholder").html('');
+                        }
+                        $('.page-news-title').html(GlobalNewsTitle);
+
+                        if (data['image']) {
+                                console.log("data[image]= " + data['image']);
+                                if (data['image'].length > 4 && !(data['youtube_embed'] && data['youtube_embed'].length > 40)) {
+                                        $(".page-news-image").css("padding-top", "28px");
+
+                                        var date = new Date(parseInt(thisid.substring(1, thisid.length)));
+                                        theYear = parseInt(date.getFullYear());
+                                        var newImage = "";
+                                        newImage = "https://www.iskconbangla.com/img/" + theYear + "_news/" + data['image'];
+                                        $('.page-news-image').html('<img src="' + newImage + '">')
+                                }
+                        } else {
+                                //console.log("data[NewsImage]= " + data['NewsImage']);//coming from firebase hosting storage
+                                var image = "https://www.iskconbangla.com/img/news/" + data['savedNewsImage'];
+                                $(".page-news-image").css("padding-top", "28px");
+                                $('.page-news-image').html('<img src="' + image + '">')
+                        }
+                        thisid = thisid.substring(1, thisid.length)
+                        console.log("allNewsStorage[thisid][youtube_embed] = " + allNewsStorage[thisid]['youtube_embed']);
+
+                        //if (allNewsStorage[fran]['block_number']) {
+                        //      $('.page-news-title').html(allNewsStorage[fran]['savedNewsTitle']);
+                        if (allNewsStorage[thisid]['youtube_embed'] && allNewsStorage[thisid]['youtube_embed'].length > 40) {
+                                console.log("putting in youtube iframe");
+                                $(".page-YTnews-body-container").css("padding-top", "56.25%");
+                                $(".page-YTnews-body-container-holder").css("padding-top", "28px");
+                                $('.page-YTnews-body').html(allNewsStorage[thisid]['youtube_embed']);
+                                $(".page-news-image").insertAfter(".page-news-body");
+                        }
+                        $(".loadmore").hide()
+                });
 
 
 
@@ -284,7 +301,7 @@ console.log("allNewsStorage[thisid][youtube_embed] = "+allNewsStorage[thisid]['y
                         //console.log("value abc = " + convertbangla(date));
                         $('#g' + blockNumber + ' .text-footer').text(convertbangla(datex) + monthNames[date.getMonth()] + convertbangla(year));
                         theTimestamp = convertbangla(datex) + monthNames[date.getMonth()] + convertbangla(year);
-                        //	$('#g' + blockNumber + ' .text-footer').text(banglaNumber[date.getDate()] +monthNames[date.getMonth()] +convertbangla(year));
+                        //      $('#g' + blockNumber + ' .text-footer').text(banglaNumber[date.getDate()] +monthNames[date.getMonth()] +convertbangla(year));
                 } else if (hrs > 1) {
                         hrs = engToBdNum(hrs.toString());
                         $('#g' + blockNumber + ' .text-footer').text(hrs + " ঘণ্টা আগে");
@@ -299,13 +316,13 @@ console.log("allNewsStorage[thisid][youtube_embed] = "+allNewsStorage[thisid]['y
                 }
 
                 //show image
-        var date = new Date(parseInt(allNewsStorage[fred]['date_stamp']));
-        theYear = parseInt(date.getFullYear());
+                var date = new Date(parseInt(allNewsStorage[fred]['date_stamp']));
+                theYear = parseInt(date.getFullYear());
                 var newImage = "";
-       newImage = "https://www.mayapur.tv/iskconbangla/img/"+theYear+"_news_sm/"+allNewsStorage[fred]['savedNewsImage'];
+                newImage = "https://www.iskconbangla.com/img/" + theYear + "_news_sm/" + allNewsStorage[fred]['savedNewsImage'];
                 // if(blockNumber==2 && short_text=='#' ){
-                // 	$("#g2").html('<div class="bigPicture">'+ newImage+'</div>');
-                // }else 
+                //      $("#g2").html('<div class="bigPicture">'+ newImage+'</div>');
+                // }else
 
                 if (blockNumber >= 1 && blockNumber <= 8) {
                         $('#g' + blockNumber + " .news-body-container-holder").css("display", "block");
@@ -336,7 +353,7 @@ console.log("allNewsStorage[thisid][youtube_embed] = "+allNewsStorage[thisid]['y
                                 //$('#g'+blockNumber+' .news-body').html(allNewsStorage[fred]['youtube_embed']);
                         }
                 }
-                if (blockNumber >= 5 && blockNumber <= 16) { //5,6,7 and 8 have both large and small displays as according to the page width, they can be either. 
+                if (blockNumber >= 5 && blockNumber <= 16) { //5,6,7 and 8 have both large and small displays as according to the page width, they can be either.
                         $('#g' + blockNumber + " .news-click").attr("id", fred);
                         $('#g' + blockNumber + ' .little-news-image-container').html('<img src="' + newImage + '">') //displays image
                         //if it has a youtube iFrame, show youtube logo on picture
@@ -407,7 +424,7 @@ console.log("allNewsStorage[thisid][youtube_embed] = "+allNewsStorage[thisid]['y
                 increasingNumber++;
         }
 
-        $(window).resize(function() { //sets the heights of newsItem contents to fill the varying space as the window resizes. The top line takes its height from the (varying) big picture height and differs from the rest.
+        $(window).resize(function () { //sets the heights of newsItem contents to fill the varying space as the window resizes. The top line takes its height from the (varying) big picture height and differs from the rest.
                 console.log("RESIZING");
                 var maxHeight = $(".bigPicture").height();
                 var heightMax = maxHeight - $("#g1 .news-title").height();
@@ -446,7 +463,7 @@ console.log("allNewsStorage[thisid][youtube_embed] = "+allNewsStorage[thisid]['y
 
 
 
-        setTimeout(function() { //leave time to load thumbnails
+        setTimeout(function () { //leave time to load thumbnails
                 $(window).trigger("resize");
         }, 8000);
 
@@ -465,11 +482,11 @@ console.log("allNewsStorage[thisid][youtube_embed] = "+allNewsStorage[thisid]['y
         if (today.indexOf("Mon") !== -1) {
                 todayBangla = "সোমবার, ";
         } else if (today.indexOf("Tue") !== -1) {
-                todayBangla = "	মঙ্গলবার, ";
+                todayBangla = " মঙ্গলবার, ";
         } else if (today.indexOf("Wed") !== -1) {
-                todayBangla = "	বুধবার, ";
+                todayBangla = " বুধবার, ";
         } else if (today.indexOf("Thu") !== -1) {
-                todayBangla = "	বৃহস্পতিবার, ";
+                todayBangla = " বৃহস্পতিবার, ";
         } else if (today.indexOf("Fri") !== -1) {
                 todayBangla = "শুক্রবার, ";
         } else if (today.indexOf("Sat") !== -1) {
@@ -508,7 +525,7 @@ console.log("allNewsStorage[thisid][youtube_embed] = "+allNewsStorage[thisid]['y
         dateth = engToBdNum(dateth.toString());
         $(".todaydate").text(todayBangla + dateth + monthBangla + year);
 
-        $('.hamburger,.close-dropdown').click(function() {
+        $('.hamburger,.close-dropdown').click(function () {
                 console.log("hello");
                 if ($('.hamburger-container').css('display') === 'none') {
                         $('.hamburger-container').css('display', 'block');
@@ -518,7 +535,7 @@ console.log("allNewsStorage[thisid][youtube_embed] = "+allNewsStorage[thisid]['y
         });
 
         //return to main news page
-        $('.return').click(function() {
+        $('.return').click(function () {
                 $('.page-YTnews-body').html('');
                 $(".page-news-container").css("display", "none");
                 $(".container1, .vbgrid-container").css("display", "grid");
@@ -527,9 +544,9 @@ console.log("allNewsStorage[thisid][youtube_embed] = "+allNewsStorage[thisid]['y
         })
 
         function addClick(thisid) {
-                $('#' + thisid).click(function() {
+                $('#' + thisid).click(function () {
 
-                        var thisid = "A"+this.id;
+                        var thisid = "A" + this.id;
                         console.log("clicked #" + thisid);
 
                         var thisItemYear = new Date(parseInt(this.id));
@@ -537,18 +554,18 @@ console.log("allNewsStorage[thisid][youtube_embed] = "+allNewsStorage[thisid]['y
 
                         console.log("::::::::::::::::::::::::::::theYear = " + theYear);
 
-                        GlobalNewsTitle=$('#'+this.id).parent().find('.news-title').html();
-console.log("--------------------------------------GlobalNewsTitle = "+GlobalNewsTitle);
+                        GlobalNewsTitle = $('#' + this.id).parent().find('.news-title').html();
+                        console.log("--------------------------------------GlobalNewsTitle = " + GlobalNewsTitle);
 
-                       // async function getDoc(thisid) {
-                        socket.emit('retrieveNewsArticle',thisid);  // request individual news article
-                   });
+                        // async function getDoc(thisid) {
+                        socket.emit('retrieveNewsArticle', thisid);  // request individual news article
+                });
 
         };
 
         //return to main news page
         $('.grid-box,.bigbox,.sub_smallbox').hover(
-                function() {
+                function () {
                         console.log("inhover");
                         $(this).find(".news-title,.bb_txt,.title").css({
                                 "color": "#0573e6",
@@ -590,7 +607,7 @@ console.log("--------------------------------------GlobalNewsTitle = "+GlobalNew
                         });
 
                 },
-                function() {
+                function () {
                         $(this).find(".news-title,.bb_txt").css('color', 'black');
                         $(this).find(".bb_txt").css('color', '#ffffff');
                         $(this).find('.news-image-container img').css({
@@ -617,7 +634,7 @@ console.log("--------------------------------------GlobalNewsTitle = "+GlobalNew
                 }
         )
         $('.bigpic').hover(
-                function() {
+                function () {
                         console.log("inhover");
                         $(this).css({
                                 "-ms-transform": "scale(0.2)",
@@ -628,7 +645,7 @@ console.log("--------------------------------------GlobalNewsTitle = "+GlobalNew
                         });
 
                 },
-                function() {
+                function () {
 
                         $(this).css({
                                 "-ms-transform": "scale(1.0)",
@@ -646,7 +663,7 @@ console.log("--------------------------------------GlobalNewsTitle = "+GlobalNew
         }
 
         var scrollTop = window.pageYOffset
-        window.onscroll = function() {
+        window.onscroll = function () {
                 myScroll()
         };
 
@@ -659,32 +676,32 @@ console.log("--------------------------------------GlobalNewsTitle = "+GlobalNew
                 }
         }
 
-setInterval(checkBanner, 60000);
+        setInterval(checkBanner, 60000);
 
-function checkBanner(){
-    // Get the current date and time in the Indian time zone
-   const nd = new Date().toLocaleString('en-US', {
-        timeZone: 'Asia/Kolkata'
-    });
-    const dateObj = new Date(nd);
-    const nhour = dateObj.getHours();
-    const nmin = dateObj.getMinutes();
-    var timeinmins = nhour * 60 + nmin;
+        function checkBanner() {
+                // Get the current date and time in the Indian time zone
+                const nd = new Date().toLocaleString('en-US', {
+                        timeZone: 'Asia/Kolkata'
+                });
+                const dateObj = new Date(nd);
+                const nhour = dateObj.getHours();
+                const nmin = dateObj.getMinutes();
+                var timeinmins = nhour * 60 + nmin;
 
-    for (var t in globalBannersStore) {
-        if (globalBannersStore[t]['startTime'] <= timeinmins && timeinmins < globalBannersStore[t]['stopTime']) {
-            var newImageSrc = "https://www.mayapur.tv/iskconbangla/img/_topbanner/" + globalBannersStore[t]['gif'];
-            console.log("banner=" + newImageSrc);
-            var image = new Image();
-            image.onload = function() {
-                console.log(">>>>>>>>>>>>image.src = " + image.src);
-                $(".head-banner").css("background-image", "url('" + newImageSrc + "')");
-            };
-            image.src = newImageSrc;
-            return;
+                for (var t in globalBannersStore) {
+                        if (globalBannersStore[t]['startTime'] <= timeinmins && timeinmins < globalBannersStore[t]['stopTime']) {
+                                var newImageSrc = "https://www.iskconbangla.com/img/_topbanner/" + globalBannersStore[t]['gif'];
+                                console.log("banner=" + newImageSrc);
+                                var image = new Image();
+                                image.onload = function () {
+                                        console.log(">>>>>>>>>>>>image.src = " + image.src);
+                                        $(".head-banner").css("background-image", "url('" + newImageSrc + "')");
+                                };
+                                image.src = newImageSrc;
+                                return;
+                        }
+                }
         }
-    }
-}
 
 
 });
@@ -694,9 +711,9 @@ function checkBanner(){
 $(document).ready(function () {
         $("#flips").click(function () {
                 $("#player").slideToggle(1000);
-                if($("#player").css("display")!=="none"){
-                 player.stop();
-                   }
+                if ($("#player").css("display") !== "none") {
+                        player.stop();
+                }
 
         });
 });
@@ -705,21 +722,21 @@ $(document).ready(function () {
 // bangla clock start here
 
 function updateTime() {
-	var now = new Date();
-	var hours = now.getHours();
-	var minutes = now.getMinutes();
-	var seconds = now.getSeconds();
+        var now = new Date();
+        var hours = now.getHours();
+        var minutes = now.getMinutes();
+        var seconds = now.getSeconds();
 
-	var bHours = toBanglaDigits(hours);
-	var bMinutes = toBanglaDigits(minutes);
-	var bSeconds = toBanglaDigits(seconds);
+        var bHours = toBanglaDigits(hours);
+        var bMinutes = toBanglaDigits(minutes);
+        var bSeconds = toBanglaDigits(seconds);
 
-	var banglaTimeUnit = getBanglaTimeUnit(hours);
+        var banglaTimeUnit = getBanglaTimeUnit(hours);
 
-	var time = bHours + "ঃ" + bMinutes + "ঃ" + bSeconds;
+        var time = bHours + "ঃ" + bMinutes + "ঃ" + bSeconds;
 
-	document.getElementById("clock").innerHTML = time;
-	document.getElementById("kal").innerHTML = banglaTimeUnit;
+        document.getElementById("clock").innerHTML = time;
+        document.getElementById("kal").innerHTML = banglaTimeUnit;
 }
 
 
@@ -727,37 +744,37 @@ function updateTime() {
 
 
 function toBanglaDigits(num) {
-	var digits = String(num).split("");
-	var banglaDigits = "";
+        var digits = String(num).split("");
+        var banglaDigits = "";
 
-	for (var i = 0; i < digits.length; i++) {
-		banglaDigits += getBanglaDigit(digits[i]);
-	}
+        for (var i = 0; i < digits.length; i++) {
+                banglaDigits += getBanglaDigit(digits[i]);
+        }
 
-	return banglaDigits;
+        return banglaDigits;
 }
 
 function getBanglaDigit(digit) {
-	var banglaDigits = ["০", "১", "২", "৩", "৪", "৫", "৬", "৭", "৮", "৯"];
-	return banglaDigits[digit];
+        var banglaDigits = ["০", "১", "২", "৩", "৪", "৫", "৬", "৭", "৮", "৯"];
+        return banglaDigits[digit];
 }
 
 function getBanglaTimeUnit(hours) {
-	var banglaTimeUnits = ["ভোর", "সকাল", "দুপুর", "বিকেল", "সন্ধ্যা", "রাত্রি"];
+        var banglaTimeUnits = ["ভোর", "সকাল", "দুপুর", "বিকেল", "সন্ধ্যা", "রাত্রি"];
 
-	if (hours >= 3 && hours < 5) {
-		return banglaTimeUnits[0];
-	} else if (hours >= 5 && hours < 12) {
-		return banglaTimeUnits[1];
-	} else if (hours >= 12 && hours < 15) {
-		return banglaTimeUnits[2];
-	} else if (hours >= 15 && hours < 18) {
-		return banglaTimeUnits[3];
-	} else if (hours >= 18 && hours < 19) {
-		return banglaTimeUnits[4];
-	} else {
-		return banglaTimeUnits[5];
-	}
+        if (hours >= 3 && hours < 5) {
+                return banglaTimeUnits[0];
+        } else if (hours >= 5 && hours < 12) {
+                return banglaTimeUnits[1];
+        } else if (hours >= 12 && hours < 15) {
+                return banglaTimeUnits[2];
+        } else if (hours >= 15 && hours < 18) {
+                return banglaTimeUnits[3];
+        } else if (hours >= 18 && hours < 19) {
+                return banglaTimeUnits[4];
+        } else {
+                return banglaTimeUnits[5];
+        }
 }
 
 setInterval(updateTime, 1000);

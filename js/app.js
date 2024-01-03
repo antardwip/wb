@@ -436,12 +436,11 @@ io.sockets.on('connection', function (socket) {
                   })
       });
 
- //this returns sixteen news items, allowing change from one year to the previous year
-      socket.on('get16MoreNewsHeadlines', (startIndex) => {       
-            console.log("in get16MoreNewsHeadlines");
 
-            const date = new Date();
-            var year = date.getFullYear(); //we need the current year in order to start
+      socket.on('get16MoreNewsHeadlines', (startIndex, year) => {        //this returns sixteen news items, allowing change from one year to the previous year
+            console.log("in get16MoreNewsHeadlines");
+            //const date = new Date();
+            //var year = date.getFullYear(); //we need the current year in order to start
             var remainder = 108;
             var all16Headlines = [];
 
@@ -449,8 +448,6 @@ io.sockets.on('connection', function (socket) {
             const modelName = "y" + year + "_news_headline";
             const thisNews = mongoose.model(modelName);
             //console.log("***NEW***   get16NewsHeadlines fromIndex = " + startIndex);
-            //     console.log("date = "+date);
-            //     console.log("year = "+year);
             console.log("startIndex = " + startIndex);
 
             thisNews.find()
@@ -460,7 +457,7 @@ io.sockets.on('connection', function (socket) {
                   .skip(startIndex) // 'startIndex' is the index from where you want to start selecting items
                   .limit(16) // Select 16 items (maybe some news headlines will be from the 16 frontpage headlines originally sent. But there will be very few, so we can let them pass.
                   .then((sixteenDocuments) => {
-                        //console.log("Here are how many documents"+sixteenDocuments.length); // The sorted and selected documents
+                        console.log("Here are how many documents" + sixteenDocuments.length); // The sorted and selected documents
                         all16Headlines = sixteenDocuments;
 
                         if (all16Headlines.length < 16 && year > 2021) { //start loading the previous year's headlines
@@ -491,6 +488,7 @@ io.sockets.on('connection', function (socket) {
                         console.log(err + " - database error lmn");
                         remainder = 0
                   })
+            console.log("leaving get16MoreNewsHeadlines");
       });
 
       socket.on('retrieveHeadlineNews', () => {
@@ -660,7 +658,7 @@ io.sockets.on('connection', function (socket) {
 
       //    RETRIEVE all videos
       socket.on('retrieveAllVideos', () => {
-            console.log("retrieve all videos");
+            //console.log("retrieve all videos");
             vids.find()
                   .then((allVids) => {
                         //console.log("retrieve allVids = "+allVids);
@@ -722,7 +720,7 @@ io.sockets.on('connection', function (socket) {
 
       //    RETRIEVE all Banners
       socket.on('retrieveAllBanners', () => {
-            console.log("retrieve all banners");
+            //console.log("retrieve all banners");
             mtvBanner.find()
                   .then((allbanners) => {
                         // console.log("retrieveAllBanners = "+allbanners);
